@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app
 
-RUN chmod +x docker/Entrypoint.sh
+RUN chmod +x docker/scripts/Entrypoint.sh
 
 EXPOSE 8000
 

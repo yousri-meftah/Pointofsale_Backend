@@ -62,12 +62,8 @@ def get_admin_input():
     first_name = input("Enter admin first name: ")
     last_name = input("Enter admin last name: ")
     password = input("Enter admin password: ")
-    number = int(input("Enter admin number: "))
-    gender = input("Enter admin gender (e.g., MALE, FEMALE): ")
-    status = input("Enter admin status (e.g., ACTIVE, INACTIVE): ")
-    contract_type = input("Enter admin contract type (e.g., CDI, CDD): ")
 
-    return email, first_name, last_name, password, number, gender, status, contract_type
+    return email, first_name, last_name, password, 0, "MALE", "ACTIVE", "CDI"
 
 
 async def main():
