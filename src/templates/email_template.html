@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .container {
+        width: 80%;
+        margin: auto;
+        overflow: hidden;
+      }
+      .main-content {
+        float: center;
+        width: 70%;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        box-shadow: 10px 10px 5px grey;
+      }
+      .button {
+        display: inline-block;
+        color: white;
+        background-color: #3498db;
+        text-decoration: none;
+        padding: 10px 20px;
+        margin: 20px 0;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="main-content">
+        <h2>Welcome, {{ firstname }}!</h2>
+        <p>
+          Thank you for creating an account with us. Please click the button
+          below to activate your account.
+        </p>
+        <a href="{{link}}" class="button">Activate Account</a>
+      </div>
+    </div>
+  </body>
+</html>
