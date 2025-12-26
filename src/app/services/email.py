@@ -66,7 +66,7 @@ async def send_activation_email(employee: Create_employee, db: Session):
     token = Activation_account( Employee_id =employee.id ,token=jwt, created_at=expiry_date , status = Token_status.PENDING)
     db.add(token)
 
-    link = "http://localhost:3000/activate/" + str(jwt)
+    link = "http://localhost:8080/activate/" + str(jwt)
     message = MessageSchema(
         subject="Activate your account",
         recipients=[employee.email],
@@ -75,5 +75,5 @@ async def send_activation_email(employee: Create_employee, db: Session):
     template_name = "email_template.html"
 
     fm = FastMail(conf)
-    #await fm.send_message(message, template_name=template_name)
+    await fm.send_message(message, template_name=template_name)
     db.flush()

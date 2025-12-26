@@ -17,7 +17,7 @@ router = APIRouter(
     dependencies=[Depends(oauth2_scheme)]
 )
 
-@router.get("/", response_model=OrdersOut)
+@router.get("", response_model=OrdersOut)
 def list_orders_route(
     db: DBSession = Depends(get_db),
     page: int = Query(1, ge=1),
@@ -79,7 +79,7 @@ async def calculate_order_price(
 
 
 
-@router.post("/", response_model=OurBaseModelOut)
+@router.post("", response_model=OurBaseModelOut)
 async def create_order_endpoint(
     order: OrderCreate,
     db: DBSession = Depends(get_db),

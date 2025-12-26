@@ -21,7 +21,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=SessionsOut)
+@router.get("", response_model=SessionsOut)
 async def list_sessions(
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1),
@@ -46,7 +46,7 @@ async def list_sessions(
             message="An error occurred while retrieving sessions."
         )
 
-@router.post("/", response_model=SessionCreateOut)
+@router.post("", response_model=SessionCreateOut)
 async def create_session_endpoint(session: Session, db: DBSession = Depends(get_db), current_user: Employee = Depends(get_current_user)):
     try:
         if session.employee_id != current_user.id:
@@ -269,7 +269,7 @@ def opened_session(db : DBSession = Depends(get_db) ,current_user: Employee = De
             message=f"An error occurred while retrieving the opened session."
         )
 
-@router.get("/check_paused_session/" , response_model=SessionCreateOut)
+@router.get("/check_paused_session" , response_model=SessionCreateOut)
 def opened_session(db : DBSession = Depends(get_db),current_user: Employee = Depends(get_current_user) ):
     try:
         session = db.query(SessionModel).filter(SessionModel.employee_id == current_user.id).filter(SessionModel.session_status == SessionStatusEnum.PAUSED).first()

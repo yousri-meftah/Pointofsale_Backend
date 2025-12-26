@@ -51,7 +51,7 @@ router = APIRouter(
     dependencies=[Depends(oauth2_scheme) , Depends(allow_action_by_roles)]
 )
 
-@router.get("/", response_model=CustomersOut)
+@router.get("", response_model=CustomersOut)
 def list_customers_route(
     db: DBSession = Depends(get_db),
     page: int = Query(1, ge=1),
@@ -142,7 +142,7 @@ def list_customers_route(
             message="An error occurred while retrieving customers."
         )
 
-@router.post("/", response_model=CustomerOut_withstatus)
+@router.post("", response_model=CustomerOut_withstatus)
 def create_customer_route(
     customer: CustomerCreate,
     db: DBSession = Depends(get_db),

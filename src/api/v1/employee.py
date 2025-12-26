@@ -112,7 +112,7 @@ def get_employee_by_id(
     )
 
 
-@router.post("/", response_model=OurBaseModelOut)
+@router.post("", response_model=OurBaseModelOut)
 async def create_employe(
     employee: User,
     db: Session = Depends(get_db),

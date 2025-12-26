@@ -12,7 +12,7 @@ router = APIRouter(
     dependencies=[Depends(oauth2_scheme) , Depends(allow_action_by_roles)]
 )
 
-@router.get("/", response_model=PricelistsPagedResponse)
+@router.get("", response_model=PricelistsPagedResponse)
 def list_pricelists(
     db: DBSession = Depends(get_db),
     ):

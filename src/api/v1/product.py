@@ -17,7 +17,7 @@ router = APIRouter(
     dependencies=[Depends(oauth2_scheme) ]
 )
 
-@router.get("/", response_model=ProductsOut)
+@router.get("", response_model=ProductsOut)
 async def list_products(
     db: DBSession = Depends(get_db), 
     page: int = Query(1, ge=1),
@@ -42,7 +42,7 @@ async def list_products(
             message="An error occurred while retrieving products."
         )
 
-@router.post("/", response_model=OurBaseModelOut)
+@router.post("", response_model=OurBaseModelOut)
 async def create_product_endpoint(product: Product, db: DBSession = Depends(get_db), ok = Depends(allow_action_by_roles)):
     try:
         new_product = await create_product(db, product)

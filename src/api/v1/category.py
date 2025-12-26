@@ -13,7 +13,7 @@ router = APIRouter(
     dependencies=[Depends(oauth2_scheme) , Depends(allow_action_by_roles)]
 )
 
-@router.get("/", response_model=CategoryOut)
+@router.get("", response_model=CategoryOut)
 async def list_categories(db: DBSession = Depends(get_db)):
     try:
         categories = await get_categories(db)
@@ -28,7 +28,7 @@ async def list_categories(db: DBSession = Depends(get_db)):
             message="An error occurred while retrieving categories."
         )
 
-@router.post("/", response_model=OurBaseModelOut)
+@router.post("", response_model=OurBaseModelOut)
 async def create_new_category(
     category: CategoryCreate, db: DBSession = Depends(get_db)
 ):

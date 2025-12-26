@@ -63,6 +63,7 @@ async def create_employee(db: Session, employee: Create_employee):
     try:
         await send_activation_email(db_employee, db)
     except Exception as e:
+        print(" e = ",e)
         db.rollback()
         raise HTTPException(status_code=500, detail="Error sending activation email.") from e
     db.commit()

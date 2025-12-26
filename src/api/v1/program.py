@@ -16,7 +16,7 @@ router = APIRouter(
     dependencies=[Depends(oauth2_scheme) , Depends(allow_action_by_roles)]
 )
 
-@router.post("/", response_model=OurBaseModelOut)
+@router.post("", response_model=OurBaseModelOut)
 async def create_program_endpoint(
     program: ProgramCreate,
     db: DBSession = Depends(get_db),
@@ -50,7 +50,7 @@ async def get_program_items(program_id: int, db: DBSession = Depends(get_db)):
         )
 
 
-@router.post("/calcule_program/", response_model=calculate_program)
+@router.post("/calcule_program", response_model=calculate_program)
 def calcule_program(
     request: CalculateProgramRequest,
     db:DBSession = Depends(get_db) ,

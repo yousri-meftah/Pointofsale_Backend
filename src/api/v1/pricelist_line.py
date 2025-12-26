@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=PricelistLineOut)
+@router.post("", response_model=PricelistLineOut)
 def create_new_pricelist_line(
     pricelist_line: PricelistLineCreate, db: DBSession = Depends(get_db)
 ):
