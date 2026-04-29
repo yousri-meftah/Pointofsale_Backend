@@ -90,6 +90,7 @@ def get_employee_by_id(
     try:
         employee  = get_employee(db, employee_id)
         employee_roles = employee.Employee_roles
+        account_status = employee.status.name
         employee_fields = employee.__dict__
         employee_fields.pop('status')
         employee_fields.pop('password')
@@ -105,6 +106,7 @@ def get_employee_by_id(
         roles_out.append(role.role.name)
 
     return UserOut(
+        account_status=account_status,
         **employee_fields,
         roles=roles_out,
         message="Employee found",
@@ -190,15 +192,15 @@ async def bulk_add_employees(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid file type. Please upload a CSV file.",
         )
+    content = await file.read()
+    csv_reader = csv.DictReader(io.StringIO(content.decode("utf-8")))
+    headers = csv_reader.fieldnames or []
     missing_fields = [field for field in REQUIRED_FIELDS if field not in headers]
     if missing_fields:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Missing required fields in the CSV: {', '.join(missing_fields)}",
         )
-
-    content = await file.read()
-    csv_reader = csv.DictReader(io.StringIO(content.decode("utf-8")))
     data_rows = []
     critical_errors = []
     can_force_errors = []
@@ -313,15 +315,15 @@ async def bulk_add_employees(
                 Employee(**employee.dict(exclude={"roles"}))
                 for employee in valid_employees
             ]
-            db.bulk_save_objects(db_employees)
-            db.flush()  
+            db.add_all(db_employees)
+            db.flush()
             db_roles = []
             for db_employee, employee in zip(db_employees, valid_employees):
                 for role in employee.roles:
                     db_roles.append(
                         Employee_role(role=role.name, Employee_id=db_employee.id)
                     )
-            db.bulk_save_objects(db_roles)
+            db.add_all(db_roles)
             db.commit()
             # i guess i need to send the emails here but whatever lets force him to do the forget password , 
         except Exception as e:

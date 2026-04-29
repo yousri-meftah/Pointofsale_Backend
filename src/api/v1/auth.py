@@ -4,13 +4,13 @@ from sqlalchemy.orm import Session
 from core.database import get_db
 from app.controllers.auth import get_token, get_refresh_token
 from typing import Optional
-from app.models import black_list_token as BlacklistedToken
+from app.models import Blacklist as BlacklistedToken
 from app.schemas.base import OurBaseModelOut
 from app.schemas.auth import ActivateAccount,resetPassword ,forgetPassword
 from app.controllers.employee import activate_account as activate_account_function,reset_password,send_reset_password_email
 from app.schemas.employee import UserOut
 from app import models
-from app.services.token import get_current_user
+from app.services.token import get_current_user, oauth2_scheme
 
 router = APIRouter(
     responses={404: {"description": "Not found"}},
@@ -31,13 +31,10 @@ async def refresh_access_token(
     return await get_refresh_token(token=refresh_token, db=db)
 
 @router.post("/logout")
-def logout(token: Optional[str] = Header(None), db: Session = Depends(get_db)):
-    if token:
-        db.add(BlacklistedToken(token=token))
-        db.commit()
-        return {"message": "Logout successful"}
-    else:
-        raise HTTPException(status_code=400, detail="Token header not provided")
+def logout(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    db.add(BlacklistedToken(token=token))
+    db.commit()
+    return {"message": "Logout successful"}
 
 
 @router.post("/activate", response_model=OurBaseModelOut)

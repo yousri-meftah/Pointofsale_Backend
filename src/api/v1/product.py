@@ -141,6 +141,7 @@ async def get_products_in_stock(
 async def bulk_remove_products(
     product_ids: list[int],
     db: DBSession = Depends(get_db),
+    ok = Depends(allow_action_by_roles),
 ):
     try:
         result = await bulk_delete_products(db, product_ids)
@@ -217,6 +218,7 @@ async def get_products_by_category(
 async def bulk_upload_products(
     products: list[Product],
     db: DBSession = Depends(get_db),
+    ok = Depends(allow_action_by_roles),
 ):
     try:
         created_products = await bulk_upload_products_to_db(db, products)
@@ -238,6 +240,7 @@ async def bulk_upload_products(
 async def delete_productt(
     product_id: int,
     db: DBSession = Depends(get_db),
+    ok = Depends(allow_action_by_roles),
 ):
     try:
         result = await delete_product(db, product_id)

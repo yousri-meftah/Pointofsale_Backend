@@ -75,6 +75,8 @@ async def create_session_endpoint(session: Session, db: DBSession = Depends(get_
             message="Session created successfully.",
             Session_id=new_session.id
         )
+    except HTTPException as e:
+        raise e
     except Exception as e:
         return OurBaseModelOut(
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -145,12 +147,12 @@ async def close_a_session(session_id: int, db: DBSession = Depends(get_db), curr
             session_status=session.session_status
         )
     except HTTPException as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=e.status_code,
             detail=str(e.detail)
         )
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An error occurred while closing the session."
         )
@@ -166,7 +168,7 @@ async def pausee_session(session_id: int, db: DBSession = Depends(get_db), curre
             message="Session paused successfully."
         )
     except HTTPException as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=e.status_code,
             detail=str(e.detail)
         )
@@ -191,6 +193,8 @@ async def resume_session_endpoint(
             Session_id=sess.id
 
         )
+    except HTTPException as e:
+        raise e
     except Exception as e:
         return OurBaseModelOut(
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -237,7 +241,7 @@ async def delete_session(
             message=f"Session {session_id} deleted successfully."
         )
     except HTTPException as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=e.status_code,
             detail=str(e.detail)
         )
@@ -309,6 +313,8 @@ async def check_session_status(
             session_status = session.session_status.name
 
         )
+    except HTTPException as e:
+        raise e
     except Exception as e:
         return OurBaseModelOut(
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
